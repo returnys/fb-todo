@@ -4,6 +4,7 @@ import List from "./components/List";
 import Form from "./components/Form";
 
 function App() {
+  console.log("App 렌더링");
   // dummy data
   const dummy = [
     { id: 1, title: "할 일 1", completed: true },
