@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SignUpDiv from "../style/UserCSS";
+// firebase 연동
+import firebase from "../firebase";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -9,9 +11,20 @@ const SignUp = () => {
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConFirm] = useState("");
 
-  const handleSignUp = e => {
+  const handleSignUp = async e => {
     e.preventDefault();
-    // firebase 가입 시도
+    try {
+      // firebase 가입 시도
+      let createUser = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, pw);
+      await createUser.user.updateProfile({
+        name: nickName,
+      });
+      console.log("등록된 정보 : ", createUser.user);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
