@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ListItem = ({ item, todoData, setTodoData }) => {
   // console.log("ListItem 렌더링", item);
@@ -7,6 +7,10 @@ const ListItem = ({ item, todoData, setTodoData }) => {
   const [isEdit, setIsEdit] = useState(false);
   // 편집 상태 타이틀 설정 state
   const [editTitle, setEditTitle] = useState(item.title);
+
+  useEffect(() => {
+    setEditTitle(item.title);
+  }, []);
 
   const getStyle = _completed => {
     return {
@@ -23,6 +27,9 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     // 3. 배열의 고차함수 중 filter를 사용
     const newTodoData = todoData.filter(item => item.id !== _id);
     setTodoData(newTodoData);
+    // localStorage 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // axios delete 호출로 fbtodolist 삭제하기
   };
 
   const handleEditClick = () => {
@@ -45,6 +52,9 @@ const ListItem = ({ item, todoData, setTodoData }) => {
       return item;
     });
     setTodoData(newTodoData);
+    // localStorage 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // axios patch/put 호출로 fbtodolist 수정하기
     setIsEdit(false);
   };
 
@@ -59,6 +69,9 @@ const ListItem = ({ item, todoData, setTodoData }) => {
       return item;
     });
     setTodoData(newTodoData);
+    // localStorage 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // axios patch/put 호출로 fbtodolist 수정하기
   };
 
   if (isEdit) {
@@ -69,8 +82,9 @@ const ListItem = ({ item, todoData, setTodoData }) => {
           <input
             className="w-full px-3 py-2 mr-3 text-gray-500 rounded"
             type="text"
-            value={editTitle}
-            onChange={handleEditChange}
+            defaultValue={item.title}
+            // value={editTitle}
+            onChange={e => handleEditChange(e)}
           />
         </div>
         <div className="items-center">
