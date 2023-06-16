@@ -28,7 +28,7 @@ const SignUpDiv = styled.div`
 `;
 
 export const LoginDiv = styled.div`
-form {
+  form {
     display: flex;
     flex-wrap: wrap;
     gap: 10px 0;
@@ -45,6 +45,32 @@ form {
       border: 1px solid #ddd;
     }
   }
-`
+`;
+
+export const MyPageDiv = styled.div`
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px 0;
+    width: 80%;
+    margin: 0 auto;
+    div {
+      display: flex;
+      justify-content: start;
+      gap: 10px;
+      label {
+        display: block;
+        width: 25%;
+        font-weight: 700;
+      }
+      input {
+        display: block;
+        width: 60%;
+        border: 1px solid #ddd;
+      }
+    }
+  }
+`;
 
 export default SignUpDiv;
