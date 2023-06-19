@@ -33,7 +33,7 @@ const Login = ({ setUserName, setUserEmail, setUserUid }) => {
       setUserName(user.displayName);
       setUserEmail(user.email);
       setUserUid(user.uid);
-      navigate("/");
+      navigate("/todo");
     } catch (error) {
       if (error.code === "auth/invalid-email") {
         setModalMessage("올바른 이메일 형식이 아닙니다.");

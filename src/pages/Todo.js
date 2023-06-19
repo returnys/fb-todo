@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { delelteAllTodo, getTodo } from "../axios/axios";
 import Form from "../components/Form";
 import List from "../components/List";
 
@@ -8,15 +9,14 @@ const Todo = ({ userName, userEmail, userUid }) => {
   // FB, MongoDB에서는 Collection 구성에 활용한다. (객체방식)
   console.log(userName, userEmail);
   const navigate = useNavigate();
-  // local data state 변수
-  const initTodoData = localStorage.getItem("fbTodoData")
-    ? JSON.parse(localStorage.getItem("fbTodoData"))
-    : [];
+  // jsonServer data state 변수
+  const initTodoData = [];
   const [todoData, setTodoData] = useState(initTodoData);
   const handleRemoveClick = () => {
     setTodoData([]);
     // localStorage 초기화
-    localStorage.setItem("fbTodoData", JSON.stringify([]));
+    // localStorage.setItem("fbTodoData", JSON.stringify([]));
+    delelteAllTodo();
   };
 
   // uid 없는 경우 로그인으로 바로 보내기
@@ -27,7 +27,9 @@ const Todo = ({ userName, userEmail, userUid }) => {
   }, []);
 
   // axios get 호출로 fbtodolist 자료받기
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getTodo(setTodoData);
+  }, []);
 
   return (
     <div className="flex items-start justify-center mt-5 w-full">
@@ -46,7 +48,12 @@ const Todo = ({ userName, userEmail, userUid }) => {
         {/* 할 일 목록 */}
         <List todoData={todoData} setTodoData={setTodoData} />
         {/* 할 일 추가 */}
-        <Form todoData={todoData} setTodoData={setTodoData} />
+        <Form
+          todoData={todoData}
+          setTodoData={setTodoData}
+          userName={userName}
+          userEmail={userEmail}
+        />
       </div>
     </div>
   );

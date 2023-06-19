@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { postTodo } from "../axios/axios";
 
-const Form = ({ todoData, setTodoData }) => {
+const Form = ({ todoData, setTodoData, userName, userEmail }) => {
   // console.log("Form 렌더링");
   // 새로운 할 일 state 변수
   const [value, setValue] = useState("");
@@ -21,21 +22,33 @@ const Form = ({ todoData, setTodoData }) => {
     }
     // 새로운 todo 객체를 만들어준다.
     // 기존의 데이터 형식을 지켜야한다.(프로퍼티명 동일하게)
-    const newTodo = { id: Date.now(), title: value, completed: false };
+    const newTodo = {
+      id: Date.now(),
+      title: value,
+      completed: false,
+      author: userName,
+      email: userEmail,
+    };
     // state 저장 후 화면 리렌더링된다.
     // 기존 todoData에 newTodo를 추가한 새로운 배열 저장
     // set함수 즉, setTodoData에서 갱신된 state를 즉시 가지고 오기 위해서는
     // set함수의 인수로 콜백함수를 전달한다.
-    // setTodoData([...todoData, newTodo]);
-    setTodoData(prevState => {
-      return [...prevState, newTodo];
-    });
+    setTodoData([...todoData, newTodo]);
+
+    // setTodoData(prevState => {
+    //   return [...prevState, newTodo];
+    // });
+
     // localStorage 저장
-    localStorage.setItem("fbTodoData", JSON.stringify([...todoData, newTodo]));
+    // localStorage.setItem("fbTodoData", JSON.stringify([...todoData, newTodo]));
+
     // axios post 호출로 fbtodolist 추가하기
+    postTodo(newTodo);
     // 입력창 초기화
     setValue("");
   };
+
+  
 
   return (
     <div>
