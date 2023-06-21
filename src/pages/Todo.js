@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { delelteAllTodo, getTodo } from "../axios/axios";
 import Form from "../components/Form";
 import List from "../components/List";
+import Loading from "../components/Loading";
 
 const Todo = ({ userName, userEmail, userUid }) => {
   // 백엔드반 DB 테이블 구성에 활용한다. (테이블식)
   // FB, MongoDB에서는 Collection 구성에 활용한다. (객체방식)
   console.log(userName, userEmail);
+  // 로딩 처리
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   // jsonServer data state 변수
   const initTodoData = [];
@@ -28,11 +31,12 @@ const Todo = ({ userName, userEmail, userUid }) => {
 
   // axios get 호출로 fbtodolist 자료받기
   useEffect(() => {
-    getTodo(setTodoData);
+    getTodo(setTodoData, setIsLoading);
   }, []);
 
   return (
     <div className="flex items-start justify-center mt-5 w-full">
+      {isLoading && <Loading />}
       <div className="w-4/5 p-6 bg-white rounded-[8px] shadow">
         <div className="flex justify-between mb-3">
           <h1 className="text-center w-3/4 text-2xl font-bold text-cyan-500">
