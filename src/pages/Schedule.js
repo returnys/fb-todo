@@ -5,16 +5,16 @@ import Calendar from "react-calendar";
 import "../style/Calendar.css";
 
 const Schedule = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const showModal = () => {
+  //   setIsModalOpen(true);
+  // };
+  // const handleOk = () => {
+  //   setIsModalOpen(false);
+  // };
+  // const handleCancel = () => {
+  //   setIsModalOpen(false);
+  // };
   const [day, setDay] = useState(new Date());
   const 서버제목 = [
     {
@@ -50,7 +50,7 @@ const Schedule = () => {
       const 이미지 = div.dataset.gogoImgpath;
       console.log(`${제목} ${날짜} ${이미지}있구나`);
     }
-    showModal();
+    // showModal();
   };
 
   // 캘린더 내용 출력하기 기능
@@ -88,7 +88,7 @@ const Schedule = () => {
   return (
     <div className="p-6 mt-5 shadow rounded bg-white">
       <h1>Schedule</h1>
-      <Modal
+      {/* <Modal
         title="Basic Modal"
         open={isModalOpen}
         onOk={handleOk}
@@ -97,7 +97,7 @@ const Schedule = () => {
         <p>Some contents...</p>
         <p>Some contents...</p>
         <p>Some contents...</p>
-      </Modal>
+      </Modal> */}
       <div>
         <Calendar
           // 날짜 클릭했을 때
@@ -110,6 +110,10 @@ const Schedule = () => {
           calendarType="US"
           formatDay={(locale, date) => moment(date).format("D")}
           tileContent={showScheduleJSX}
+          selectRange={true}
+          next2Label={null}
+          prev2Label={null}
+          showNeighboringMonth={false}
         />
         <div>{moment(day).format("YYYY년 MM월 DD일")}</div>
       </div>
