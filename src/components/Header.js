@@ -1,23 +1,23 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import firebase from "../firebase";
-const Header = ({
-  userName,
-  userEmail,
-  userUid,
-  setUserName,
-  setUserEmail,
-  setUserUid,
-}) => {
-  const navigate = useNavigate();
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
+
+const Header = ({ userName, userEmail, userUid }) => {
+  // AuthContext 로그아웃 실행으로 상태 변경
+  const { user } = useAuthContext();
+  const { logout } = useLogout();
+  // const navigate = useNavigate();
   // fb 로그아웃
   const handleLogout = () => {
-    firebase.auth().signOut();
-    console.log("로그아웃");
-    setUserName("");
-    setUserEmail("");
-    setUserUid("");
-    navigate("");
+    logout();
+    // dispatch({ type: "logout"});
+    // firebase.auth().signOut();
+    // console.log("로그아웃");
+    // setUserName("");
+    // setUserEmail("");
+    // setUserUid("");
+    // navigate("/");
   };
 
   return (
@@ -62,7 +62,13 @@ const Header = ({
           </li>
         </ul>
         <div className="flex justify-center gap-5">
-          {userUid ? (
+          <button
+            className="text-white hover:text-orange-600"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+          {user ? (
             <div className="text-white">
               <span className="px-2">{userName}</span>
               <span>{userEmail}</span>
