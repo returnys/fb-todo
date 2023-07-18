@@ -18,9 +18,9 @@ const MyPage = ({
   const [pwConfirm, setPwConFirm] = useState("");
 
   useEffect(() => {
-    if (!userUid) {
-      navigate("/");
-    }
+    // if (!userUid) {
+    //   navigate("/");
+    // }
   }, []);
   // FB의 사용자정보 객체
   const user = firebase.auth().currentUser;

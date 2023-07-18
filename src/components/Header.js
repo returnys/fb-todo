@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 
-const Header = ({ userName, userEmail, userUid }) => {
+const Header = () => {
   // AuthContext 로그아웃 실행으로 상태 변경
   const { user } = useAuthContext();
   const { logout } = useLogout();
   // const navigate = useNavigate();
+  console.log(user);
   // fb 로그아웃
   const handleLogout = () => {
     logout();
@@ -39,7 +40,7 @@ const Header = ({ userName, userEmail, userUid }) => {
           </li>
           <li>
             <Link
-              to={userUid ? "/todo" : "/login"}
+              to={user ? "/todo" : "/login"}
               className="text-white hover:text-orange-600"
             >
               Todo
@@ -62,17 +63,11 @@ const Header = ({ userName, userEmail, userUid }) => {
           </li>
         </ul>
         <div className="flex justify-center gap-5">
-          <button
-            className="text-white hover:text-orange-600"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
           {user ? (
             <div className="text-white">
-              <span className="px-2">{userName}</span>
-              <span>{userEmail}</span>
-              <span className="px-2">{userUid}</span>
+              <span className="px-2">{user.displayName}</span>
+              <span>{user.email}</span>
+              <span className="px-2">{user.uid}</span>
               <button onClick={handleLogout}>Logout</button>
               <Link to="/mypage" className="text-white px-2">
                 마이페이지

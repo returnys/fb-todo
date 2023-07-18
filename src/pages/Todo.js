@@ -24,9 +24,9 @@ const Todo = ({ userName, userEmail, userUid }) => {
 
   // uid 없는 경우 로그인으로 바로 보내기
   useEffect(() => {
-    if (!userUid) {
-      navigate("/login");
-    }
+    // if (!userUid) {
+    //   navigate("/login");
+    // }
   }, []);
 
   // axios get 호출로 fbtodolist 자료받기
