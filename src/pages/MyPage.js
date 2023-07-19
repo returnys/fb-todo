@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext";
-import { useUpdateEmail } from "../hooks/useUpdateEmail";
-import { useUpdateNickName } from "../hooks/useUpdateNickName";
-import { useUpdatePassword } from "../hooks/useUpdatePassword";
-import { useUserDelete } from "../hooks/useUserDelete";
+import {
+  useAuthContext,
+  useUpdateEmail,
+  useUpdateNickName,
+  useUpdatePassword,
+  useUserDelete,
+} from "../hooks/useFirebase";
 import { MyPageDiv } from "../style/UserCSS";
 
 const MyPage = () => {

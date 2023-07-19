@@ -1,7 +1,7 @@
 import { Button, Checkbox, Form, Input, Modal } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLogin } from "../hooks/useLogin";
+import { useLogin } from "../hooks/useFirebase";
 // import firebase from "../firebase";
 
 const Login = () => {
@@ -27,7 +27,7 @@ const Login = () => {
   const onFinish = values => {
     // console.log("Success:", values);
     // Firebase 로그인 시도
-      login(values.email, values.password);
+    login(values.email, values.password);
     // try {
     //   await firebase
     //     .auth()

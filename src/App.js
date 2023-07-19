@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
-import { useAuthContext } from "./hooks/useAuthContext";
+import { useAuthContext } from "./hooks/useFirebase";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -15,7 +15,6 @@ import TodoChart from "./pages/TodoChart";
 import Upload from "./pages/Upload";
 
 function App() {
-
   // 추후에 Redux/Recoil state로 관리 필요
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
