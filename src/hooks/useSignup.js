@@ -44,7 +44,6 @@ export const useSignup = () => {
       });
       // 프로필 업데이트 성공 > AuthContext 업데이트
       // dispatch(액션);
-      console.log("dispatch 실행");
       dispatch({ type: "login", payload: user });
       // 에러 없음
       setError(null);

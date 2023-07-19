@@ -27,11 +27,7 @@ const Login = () => {
   const onFinish = values => {
     // console.log("Success:", values);
     // Firebase 로그인 시도
-    try {
       login(values.email, values.password);
-    } catch (error) {
-      console.log(error);
-    }
     // try {
     //   await firebase
     //     .auth()

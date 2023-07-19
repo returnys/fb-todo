@@ -15,7 +15,6 @@ import TodoChart from "./pages/TodoChart";
 import Upload from "./pages/Upload";
 
 function App() {
-  // console.log("App 렌더링");
 
   // 추후에 Redux/Recoil state로 관리 필요
   const [userName, setUserName] = useState("");
@@ -55,20 +54,7 @@ function App() {
               />
               <Route
                 path="/mypage"
-                element={
-                  user ? (
-                    <MyPage
-                      userName={userName}
-                      userEmail={userEmail}
-                      userUid={userUid}
-                      setUserName={setUserName}
-                      setUserEmail={setUserEmail}
-                      setUserUid={setUserUid}
-                    />
-                  ) : (
-                    <Navigate to="/login" />
-                  )
-                }
+                element={user ? <MyPage /> : <Navigate to="/login" />}
               />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/upload" element={<Upload />} />

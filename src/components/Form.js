@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { postTodo } from "../axios/axios";
 
 const Form = ({ todoData, setTodoData, userName, userEmail }) => {
-  // console.log("Form 렌더링");
   // 새로운 할 일 state 변수
   const [value, setValue] = useState("");
 

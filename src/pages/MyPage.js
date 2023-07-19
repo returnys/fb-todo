@@ -1,86 +1,93 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import firebase from "../firebase";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useUpdateEmail } from "../hooks/useUpdateEmail";
+import { useUpdateNickName } from "../hooks/useUpdateNickName";
+import { useUpdatePassword } from "../hooks/useUpdatePassword";
+import { useUserDelete } from "../hooks/useUserDelete";
 import { MyPageDiv } from "../style/UserCSS";
 
-const MyPage = ({
-  userName,
-  userEmail,
-  userUid,
-  setUserName,
-  setUserEmail,
-  setUserUid,
-}) => {
+const MyPage = () => {
+  const { user, dispatch } = useAuthContext();
+  const { updateNickName } = useUpdateNickName();
+  const { updateMail } = useUpdateEmail();
+  const { updatepw } = useUpdatePassword();
+  const { userDelete } = useUserDelete();
   const navigate = useNavigate();
-  const [nickName, setNickName] = useState(userName);
-  const [email, setEmail] = useState(userEmail);
+  const [nickName, setNickName] = useState("");
+  const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConFirm] = useState("");
 
+  // AuthContext에 state의 user를 출력
   useEffect(() => {
-    // if (!userUid) {
-    //   navigate("/");
-    // }
+    setNickName(user.displayName);
+    setEmail(user.email);
   }, []);
+
   // FB의 사용자정보 객체
-  const user = firebase.auth().currentUser;
+  // const userinfo = firebase.auth().currentUser;
   const handlerNickName = async e => {
     e.preventDefault();
-    try {
-      await user.updateProfile({
-        displayName: nickName,
-      });
-      setUserName(nickName);
-      setNickName(nickName);
-      alert("이름 정보를 변경하였습니다.");
-    } catch (error) {
-      console.log(error.code);
-    }
+    updateNickName(nickName);
+    // try {
+    //   await user.updateProfile({
+    //     displayName: nickName,
+    //   });
+    //   setUserName(nickName);
+    //   setNickName(nickName);
+    //   alert("이름 정보를 변경하였습니다.");
+    // } catch (error) {
+    //   console.log(error.code);
+    // }
   };
   const handlerEmail = async e => {
     e.preventDefault();
-    try {
-      await user.updateEmail(email);
-      setUserEmail(email);
-      setEmail(email);
-      alert("이메일 정보를 변경하였습니다.");
-    } catch (error) {
-      if (error.code == "auth/email-already-in-use") {
-        alert("The email address is already in use");
-      } else if (error.code == "auth/invalid-email") {
-        alert("The email address is not valid.");
-      } else {
-        alert("이메일을 확인해 주세요.");
-      }
-    }
+    updateMail(email);
+    // try {
+    //   await user.updateEmail(email);
+    //   setUserEmail(email);
+    //   setEmail(email);
+    //   alert("이메일 정보를 변경하였습니다.");
+    // } catch (error) {
+    //   if (error.code == "auth/email-already-in-use") {
+    //     alert("The email address is already in use");
+    //   } else if (error.code == "auth/invalid-email") {
+    //     alert("The email address is not valid.");
+    //   } else {
+    //     alert("이메일을 확인해 주세요.");
+    //   }
+    // }
   };
   const handlerPassword = async e => {
     e.preventDefault();
-    try {
-      await user.updatePassword(pw);
-      alert("비밀번호 정보를 변경하였습니다.");
-    } catch (error) {
-      if (error.code === "auth/weak-password") {
-        alert("The password is too weak.");
-      } else {
-        alert("비밀번호 다시 입력해 주세요.");
-      }
-    }
+    updatepw(pw);
+    // try {
+    //   await user.updatePassword(pw);
+    //   alert("비밀번호 정보를 변경하였습니다.");
+    // } catch (error) {
+    //   if (error.code === "auth/weak-password") {
+    //     alert("The password is too weak.");
+    //   } else {
+    //     alert("비밀번호 다시 입력해 주세요.");
+    //   }
+    // }
   };
 
   //  회원 탈퇴
   const handlerDelete = async e => {
     e.preventDefault();
-    try {
-      await user.delete();
-      alert("서비스 탈퇴하였습니다.");
-      setUserName("");
-      setUserEmail("");
-      setUserUid("");
-      navigate("/");
-    } catch (error) {
-      console.log(error.code);
-    }
+    userDelete();
+    // try {
+    //   await user.delete();
+    //   alert("서비스 탈퇴하였습니다.");
+    //   setUserName("");
+    //   setUserEmail("");
+    //   setUserUid("");
+    //   navigate("/");
+    // } catch (error) {
+    //   console.log(error.code);
+    // }
   };
 
   return (

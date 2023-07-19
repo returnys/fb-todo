@@ -48,7 +48,6 @@ const Schedule = () => {
       const 제목 = div.dataset.gogoTitle;
       const 날짜 = div.dataset.gogoDay;
       const 이미지 = div.dataset.gogoImgpath;
-      console.log(`${제목} ${날짜} ${이미지}있구나`);
     }
     // showModal();
   };
@@ -59,14 +58,11 @@ const Schedule = () => {
     // date를 우리가 가지고 있는 서버 제목와 비교하기 위해서
     // 포맷을 YYYY-MM-DD로 바꿔준다.
     let 날짜 = moment(date).format("YYYY-MM-DD");
-    // console.log(날짜);
     let result = 서버제목.find(item => {
       if (item.day === 날짜) {
-        // console.log("날짜가같아요 화면출력");
         return item;
       }
     });
-    // console.log("result : ", result);
     if (result) {
       return (
         // js의 data 어트리뷰트에 제목 담기

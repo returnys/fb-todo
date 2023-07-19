@@ -26,7 +26,6 @@ const UploadFetch = () => {
     // FormData 객체에 속성명:값을 추가한다.
     // 이 경우 append(속성명: 값) 메서드를 활용한다.
     formData.append(sendKey, file);
-    console.log(formData);
 
     // 전송을 한다
     try {
@@ -85,7 +84,6 @@ const UploadPreview = () => {
       // 이미지가 임시파일로 웹브라우저에 로드완료되면
       reader.onloadend = () => {
         // state 변경한다.
-        console.log(reader.result);
         // 3번.
         setUploadImage(reader.result);
       };
@@ -117,7 +115,6 @@ const UploadPreview = () => {
         console.log("전송완료 : ", res);
         // 서버가 정상적으로 업데이트 되고 나서 URL 줄 때
         const serverStatus = res.status.toString();
-        console.log(serverStatus.charAt(0));
         if (serverStatus.charAt(0) === "2") {
           setCharImg("서버의 이미지 주소 URL");
         } else {
@@ -196,7 +193,6 @@ const UploadAxios = () => {
       // 이미지가 임시파일로 웹브라우저에 로드완료되면
       reader.onloadend = () => {
         // state 변경한다.
-        console.log(reader.result);
         // 3번.
         setUploadImage(reader.result);
       };
@@ -226,7 +222,6 @@ const UploadAxios = () => {
         console.log("전송완료 : ", res);
         // 서버가 정상적으로 업데이트 되고 나서 URL 줄 때
         const serverStatus = res.status.toString();
-        console.log(serverStatus.charAt(0));
         if (serverStatus.charAt(0) === "2") {
           setCharImg("서버의 이미지 주소 URL");
         } else {
@@ -308,7 +303,6 @@ const UploadJson = () => {
   // handle 코딩(이벤트 핸들링 함수)
   // 1. 파일이 선택됐을 때 처리
   const handleChangeFile = e => {
-    // console.log(e.target.files[0]);
     const file = e.target.files[0];
     // 파일을 react 변수에 담고
     setSelectFile(file);

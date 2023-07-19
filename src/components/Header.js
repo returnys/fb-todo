@@ -8,13 +8,11 @@ const Header = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
   // const navigate = useNavigate();
-  console.log(user);
   // fb 로그아웃
   const handleLogout = () => {
     logout();
     // dispatch({ type: "logout"});
     // firebase.auth().signOut();
-    // console.log("로그아웃");
     // setUserName("");
     // setUserEmail("");
     // setUserUid("");

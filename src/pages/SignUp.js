@@ -15,12 +15,8 @@ const SignUp = () => {
   const { signup } = useSignup();
   const handleSignUp = async e => {
     e.preventDefault();
-    try {
-      // 로그인을 시도한다.
-      signup(email, pw, nickName);
-    } catch (error) {
-      console.log(error);
-    }
+    // 로그인을 시도한다.
+    signup(email, pw, nickName);
     // try {
     //   // firebase 가입 시도
     //   let createUser = await firebase
