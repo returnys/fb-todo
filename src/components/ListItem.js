@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { completedPatch, deleteTodo, patchTitleTodo } from "../axios/axios";
+import React, { useState } from "react";
+import { useFireStore } from "../hooks/useFireStore";
 
-const ListItem = ({ item, todoData, setTodoData }) => {
-  // console.log("ListItem 렌더링", item);
-
+const ListItem = ({ item }) => {
+  const { deleteDocument, updateCompletedDocument, updateTitleDocument } =
+    useFireStore("todo");
   // 편집 상태 설정 state
   const [isEdit, setIsEdit] = useState(false);
   // 편집 상태 타이틀 설정 state
   const [editTitle, setEditTitle] = useState(item.title);
-
-  useEffect(() => {
-    setEditTitle(item.title);
-  }, []);
 
   const getStyle = _completed => {
     return {
@@ -22,17 +18,17 @@ const ListItem = ({ item, todoData, setTodoData }) => {
 
   // 이벤트 핸들러
   const handleDeleteClick = _id => {
+    deleteDocument(_id);
     // 전달된 id를 검색해서 목록에서 제거
     // 1. 전달된 id로 해당하는 목록 찾아서 제외
     // 2. 새로운 목록으로 갱신해서 화면 리렌더링
     // 3. 배열의 고차함수 중 filter를 사용
-    const newTodoData = todoData.filter(item => item.id !== _id);
-    setTodoData(newTodoData);
+    // const newTodoData = todoData.filter(item => item.id !== _id);
+    // setTodoData(newTodoData);
     // localStorage 저장
     // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
-
     // axios delete 호출로 fbtodolist 삭제하기
-    deleteTodo(_id);
+    // deleteTodo(_id);
   };
 
   const handleEditClick = () => {
@@ -48,38 +44,42 @@ const ListItem = ({ item, todoData, setTodoData }) => {
   };
 
   const handleSaveClick = _id => {
-    let newTodoData = todoData.map(item => {
-      if (item.id === _id) {
-        item.title = editTitle;
-        item.completed = false;
-      }
-      return item;
-    });
-    setTodoData(newTodoData);
+    updateTitleDocument(_id, editTitle);
+    // let newTodoData = todoData.map(item => {
+    //   if (item.id === _id) {
+    //     item.title = editTitle;
+    //     item.completed = false;
+    //   }
+    //   return item;
+    // });
+    // setTodoData(newTodoData);
 
     // localStorage 저장
     // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
 
     // axios patch/put 호출로 fbtodolist 수정하기
-    patchTitleTodo(_id, editTitle);
+    // patchTitleTodo(_id, editTitle);
     setIsEdit(false);
   };
 
   const handleCompleteChange = _id => {
+    // FB의 fireStore에서 id를 참조 전달
+    // FB의 fireStore에서 completed를 반대로
+    updateCompletedDocument(_id, !item.completed);
     // 중요한 것은 id에 해당하는 것만 수정하면 되는게 아니다.
     // state는 항상 새롭게 만든 내용 즉, 배열로 업데이트 해야 한다.
     // 새로운 배열을 만들어서 set 해야한다.
-    let newTodoData = todoData.map(item => {
-      if (item.id === _id) {
-        item.completed = !item.completed;
-      }
-      return item;
-    });
-    setTodoData(newTodoData);
+    // let newTodoData = todoData.map(item => {
+    //   if (item.id === _id) {
+    //     item.completed = !item.completed;
+    //   }
+    //   return item;
+    // });
+    // setTodoData(newTodoData);
     // localStorage 저장
     // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     // axios patch/put 호출로 fbtodolist 수정하기
-    completedPatch(_id, { ...item });
+    // completedPatch(_id, { ...item });
   };
 
   if (isEdit) {

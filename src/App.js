@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Modal } from "antd";
+import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
@@ -19,7 +20,23 @@ function App() {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userUid, setUserUid] = useState("");
-  const { isAuthReady, user } = useAuthContext();
+  const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
+
+  // 에러메시지 모달 관련
+  const error = () => {
+    Modal.error({
+      title: "Firebase Warning Message!",
+      content: errMessage,
+      onOk: dispatch({ type: "isError", payload: "" }),
+      okButtonProps: { style: { background: "red" } },
+    });
+  };
+
+  useEffect(() => {
+    if (errMessage !== "") {
+      error(errMessage);
+    }
+  }, [errMessage]);
 
   return (
     <>
