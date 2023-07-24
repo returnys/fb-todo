@@ -27,7 +27,7 @@ const getTodo = async (setTodoData, 함수2) => {
     setTodoData(todoArr);
     함수2(false);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     함수2(false);
   }
 };
@@ -37,9 +37,9 @@ const postTodo = async newTodo => {
   try {
     const res = await axiosInstance.post("/todo", newTodo);
     const result = res.data;
-    console.log(result);
+    // console.log(result);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -51,9 +51,9 @@ const patchTitleTodo = async (_id, editTitle) => {
       completed: false,
     });
     const result = res.data;
-    console.log(result);
+    // console.log(result);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -63,9 +63,9 @@ const completedPatch = async (_id, item) => {
       completed: item.completed,
     });
     const result = res.data;
-    console.log(result);
+    // console.log(result);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -74,9 +74,9 @@ const deleteTodo = async _id => {
   try {
     const res = await axiosInstance.delete(`/todo/${_id}`);
     const result = res.data;
-    console.log(result);
+    // console.log(result);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -89,7 +89,7 @@ const delelteAllTodo = async () => {
       deleteTodo(item.id);
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 

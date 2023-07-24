@@ -1,14 +1,14 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { delelteAllTodo } from "../axios/axios";
 import Form from "../components/Form";
 import List from "../components/List";
 import { useCollection } from "../hooks/useCollection";
-import { useAuthContext } from "../hooks/useFirebase";
 
-const Todo = ({ userName, userEmail, userUid }) => {
+const Todo = () => {
   // 사용자별 등록을 위해 user를 참조
-  const { user } = useAuthContext();
+  const { user } = useSelector(state => state);
   // 컬렉션 데이터 출력
   const { documents, error } = useCollection("todo", ["uid", "==", user.uid]);
   // 백엔드반 DB 테이블 구성에 활용한다. (테이블식)
@@ -46,13 +46,7 @@ const Todo = ({ userName, userEmail, userUid }) => {
         {documents && <List todoData={documents} />}
         {/* <List todoData={todoData} setTodoData={setTodoData} /> */}
         {/* 할 일 추가 */}
-        <Form
-          todoData={todoData}
-          setTodoData={setTodoData}
-          userName={userName}
-          userEmail={userEmail}
-          uid={user.uid}
-        />
+        <Form todoData={todoData} setTodoData={setTodoData} uid={user.uid} />
       </div>
     </div>
   );

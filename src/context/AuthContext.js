@@ -23,6 +23,12 @@ const authReducer = (state, action) => {
       return { ...state, user: null };
     case "isError":
       return { ...state, errMessage: action.payload };
+    case "kakaoLogin":
+      return { ...state, kakaoProfile: action.payload };
+    case "kakaoLogout":
+      return { ...state, kakaoProfile: null };
+    case "kakaOut":
+      return { ...state, kakaoProfile: null };
     default:
       return state;
   }
@@ -35,6 +41,7 @@ const AuthContextProvider = ({ children }) => {
     user: null, // 사용자 정보
     isAuthReady: false, // 로그인 상태 체크
     errMessage: "", // 에러 메시지
+    kakaoProfile: null, // 카카오 정보 저장
   });
   // FB 인증 웹브라우저 새로고침 처리
   useEffect(() => {

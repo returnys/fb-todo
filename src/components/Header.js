@@ -1,10 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useAuthContext, useLogout } from "../hooks/useFirebase";
+import { useLogout } from "../hooks/useFirebase";
 
 const Header = () => {
   // AuthContext 로그아웃 실행으로 상태 변경
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
+  const { user } = useSelector(state => state);
   const { logout } = useLogout();
   // const navigate = useNavigate();
   // fb 로그아웃

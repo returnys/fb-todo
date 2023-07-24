@@ -36,7 +36,7 @@ const UploadFetch = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("전송완료:", res);
+      // console.log("전송완료:", res);
 
       // 임시로 올려진 이미지를 미리보기하자.
       // 임시로 URL을 만드는 메서드(필수 메서드 X)
@@ -44,7 +44,7 @@ const UploadFetch = () => {
       // blob은 이진수로 데이터를 표현한다.
       setUploadImg(URL.createObjectURL(file));
     } catch (error) {
-      console.log("업로드 실패:", error);
+      // console.log("업로드 실패:", error);
     }
   };
   return (
@@ -112,7 +112,7 @@ const UploadPreview = () => {
           body: formData,
           headers: { "Content-Type": "multipart/form-data" },
         });
-        console.log("전송완료 : ", res);
+        // console.log("전송완료 : ", res);
         // 서버가 정상적으로 업데이트 되고 나서 URL 줄 때
         const serverStatus = res.status.toString();
         if (serverStatus.charAt(0) === "2") {
@@ -122,7 +122,7 @@ const UploadPreview = () => {
           setCharImg(uploadImage);
         }
       } catch (error) {
-        console.log("전송실패 : ", error);
+        // console.log("전송실패 : ", error);
       }
     }
   };
@@ -219,7 +219,7 @@ const UploadAxios = () => {
         const res = await axios.post(sendUrl, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        console.log("전송완료 : ", res);
+        // console.log("전송완료 : ", res);
         // 서버가 정상적으로 업데이트 되고 나서 URL 줄 때
         const serverStatus = res.status.toString();
         if (serverStatus.charAt(0) === "2") {
@@ -229,7 +229,7 @@ const UploadAxios = () => {
           setCharImg(uploadImage);
         }
       } catch (error) {
-        console.log("전송실패 : ", error);
+        // console.log("전송실패 : ", error);
         // 서버가 이상있어서 데모버전으로 프론트에서 처리
         setCharImg(uploadImage);
       }
@@ -325,7 +325,7 @@ const UploadJson = () => {
     // form에서 submit이 발생하면 웹브라우저가 갱신된다.
     // 갱신 안되도록 기본기능 막기
     e.preventDefault();
-    console.log("submit 실행");
+    // console.log("submit 실행");
 
     // 필수 항목을 체크한다.
     // 이미지 파일 있는지
@@ -355,7 +355,7 @@ const UploadJson = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log(error);
     }
@@ -422,7 +422,7 @@ const UploadMulti = () => {
   };
   const handleSubmit = async e => {
     e.preventDefault();
-    console.log("submit 실행");
+    // console.log("submit 실행");
     if (!previewImage) {
       alert("이미지를 선택해주세요.");
     }
@@ -446,7 +446,7 @@ const UploadMulti = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.log(error);
     }

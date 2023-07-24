@@ -8,9 +8,10 @@ import {
   useUserDelete,
 } from "../hooks/useFirebase";
 import { MyPageDiv } from "../style/UserCSS";
+import { useSelector } from "react-redux";
 
 const MyPage = () => {
-  const { user, dispatch } = useAuthContext();
+  const { user } = useSelector(state=>state);
   const { updateNickName } = useUpdateNickName();
   const { updateMail } = useUpdateEmail();
   const { updatepw } = useUpdatePassword();
