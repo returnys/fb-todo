@@ -11,6 +11,14 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { appAuth } from "../firebase/config";
+import {
+  FB_DELETE_USER,
+  FB_IS_ERROR,
+  FB_LOGIN,
+  FB_LOGOUT,
+  FB_UPDATE_EMAIL,
+  FB_UPDATE_NAME,
+} from "../modules/fbreducer";
 
 // AuthContext Hook
 // export const useAuthContext = () => {
@@ -35,7 +43,7 @@ export const useLogin = () => {
         password,
       );
       const user = userCredential.user;
-      dispatch({ type: "login", payload: user });
+      dispatch({ type: FB_LOGIN, payload: user });
       navigate("/");
     } catch (err) {
       // console.log(err.message);
@@ -51,7 +59,7 @@ export const useLogin = () => {
       } else {
         errMessage = "로그인이 실패하였습니다.";
       }
-      dispatch({ type: "isError", payload: errMessage });
+      dispatch({ type: FB_IS_ERROR, payload: errMessage });
     }
   };
   return { error, isPending, login };
@@ -69,7 +77,7 @@ export const useLogout = () => {
     setIsPending(true);
     try {
       await signOut(appAuth);
-      dispatch({ type: "logout" });
+      dispatch({ type: FB_LOGOUT });
       navigate("/");
     } catch (err) {
       // console.log(err);
@@ -105,7 +113,7 @@ export const useSignup = () => {
         displayName: displayName,
         // photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
-      dispatch({ type: "login", payload: user });
+      dispatch({ type: FB_LOGIN, payload: user });
       setError(null);
       setIspending(false);
       navigate("/login");
@@ -120,7 +128,7 @@ export const useSignup = () => {
       } else if (err.code == "auth/weak-password") {
         errMessage = "The password is too weak.";
       }
-      dispatch({ type: "isError", payload: errMessage });
+      dispatch({ type: FB_IS_ERROR, payload: errMessage });
     }
   };
   return { error, ispending, signup };
@@ -137,7 +145,7 @@ export const useUpdateEmail = () => {
     setIsPending(true);
     try {
       await updateEmail(appAuth.currentUser, email);
-      dispatch({ type: "updateEmail", payload: appAuth.currentUser });
+      dispatch({ type: FB_UPDATE_EMAIL, payload: appAuth.currentUser });
       setIsPending(false);
     } catch (err) {
       // console.log(err.message);
@@ -162,7 +170,7 @@ export const useUpdateNickName = () => {
         displayName: displayName,
         // photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
-      dispatch({ type: "updateName", payload: appAuth.currentUser });
+      dispatch({ type: FB_UPDATE_NAME, payload: appAuth.currentUser });
       setIsPending(false);
     } catch (err) {
       // console.log(err.message);
@@ -204,7 +212,7 @@ export const useUserDelete = () => {
     setIsPending(true);
     try {
       await deleteUser(appAuth.currentUser);
-      dispatch({ type: "deleteUser" });
+      dispatch({ type: FB_DELETE_USER });
       setIsPending(false);
       // console.log("서비스 탈퇴하였습니다.");
       navigate("/");

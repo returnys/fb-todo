@@ -7,39 +7,14 @@ import App from "./App";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import "./index.css";
+// Redux DevTools 설치
+import { composeWithDevTools } from "redux-devtools-extension";
+import authReducer, { initialState } from "./modules/fbreducer";
 
-// 1. Redux Store에서 관리할 초기 객체
-const initialState = {
-  user: null, // 사용자 정보
-  isAuthReady: false, // 로그인 상태 체크
-  errMessage: "", // 에러 메시지
-};
-// 2. Reducer 함수 작성
-// dispatch에 의해 전달된 액션을 이용하여 state를 갱신
-const authReducer = (state, action) => {
-  switch (action.type) {
-    case "login":
-      // state를 갱신한다.
-      return { ...state, user: action.payload };
-    case "logout":
-      return { ...state, user: null };
-    case "isAuthReady":
-      return { ...state, user: action.payload, isAuthReady: true };
-    case "updateName":
-      return { ...state, user: action.payload };
-    case "updateEmail":
-      return { ...state, user: action.payload };
-    case "deleteUser":
-      return { ...state, user: null };
-    case "isError":
-      return { ...state, errMessage: action.payload };
-    default:
-      return state;
-  }
-};
+
 // 3. store 생성
-// 저장소 = createStore(reducer함수, state초기값);
-const store = createStore(authReducer, initialState);
+// 저장소 = createStore(reducer함수, state초기값, 개발도구);
+const store = createStore(authReducer, initialState, composeWithDevTools());
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

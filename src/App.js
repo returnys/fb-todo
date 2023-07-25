@@ -1,9 +1,12 @@
 import { Modal } from "antd";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
+import { appAuth } from "./firebase/config";
+import { FB_IS_AUTHREADY, FB_IS_ERROR } from "./modules/fbreducer";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -14,8 +17,6 @@ import SignUp from "./pages/SignUp";
 import Todo from "./pages/Todo";
 import TodoChart from "./pages/TodoChart";
 import Upload from "./pages/Upload";
-import { onAuthStateChanged } from "firebase/auth";
-import { appAuth } from "./firebase/config";
 
 function App() {
   // const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
@@ -33,7 +34,7 @@ function App() {
     onAuthStateChanged(appAuth, user => {
       // AuthContext에 user 정보를 입력한다.
       // console.log("onAuthStateChanged : ", user);
-      dispatch({ type: "isAuthReady", payload: user });
+      dispatch({ type: FB_IS_AUTHREADY, payload: user });
     });
   }, []);
 
@@ -42,7 +43,7 @@ function App() {
     Modal.error({
       title: "Firebase Warning Message!",
       content: errMessage,
-      onOk: dispatch({ type: "isError", payload: "" }),
+      onOk: dispatch({ type: FB_IS_ERROR, payload: "" }),
       okButtonProps: { style: { background: "red" } },
     });
   };
