@@ -12,25 +12,18 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { appAuth } from "../firebase/config";
 import {
-  FB_DELETE_USER,
-  FB_IS_ERROR,
-  FB_LOGIN,
-  FB_LOGOUT,
-  FB_UPDATE_EMAIL,
-  FB_UPDATE_NAME,
-} from "../modules/fbreducer";
-
-// AuthContext Hook
-// export const useAuthContext = () => {
-//   const context = useContext(AuthContext);
-//   return context;
-// };
+  deleteUserFB,
+  isErrorFB,
+  loginFB,
+  logoutFB,
+  updateEmailFB,
+  updateNameFB,
+} from "../reducers/fbAuthSlice";
 
 // 사용자 로그인 Hook
 export const useLogin = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  // const { dispatch } = useAuthContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const login = async (email, password) => {
@@ -43,10 +36,15 @@ export const useLogin = () => {
         password,
       );
       const user = userCredential.user;
-      dispatch({ type: FB_LOGIN, payload: user });
+      dispatch(
+        loginFB({
+          email: user.email,
+          displayName: user.displayName,
+          uid: user.uid,
+        }),
+      );
       navigate("/");
     } catch (err) {
-      // console.log(err.message);
       let errMessage = "";
       if (err.code === "auth/invalid-email") {
         errMessage = "올바른 이메일 형식이 아닙니다.";
@@ -59,7 +57,7 @@ export const useLogin = () => {
       } else {
         errMessage = "로그인이 실패하였습니다.";
       }
-      dispatch({ type: FB_IS_ERROR, payload: errMessage });
+      dispatch(isErrorFB(errMessage));
     }
   };
   return { error, isPending, login };
@@ -69,7 +67,6 @@ export const useLogin = () => {
 export const useLogout = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  // const { dispatch } = useAuthContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logout = async () => {
@@ -77,10 +74,10 @@ export const useLogout = () => {
     setIsPending(true);
     try {
       await signOut(appAuth);
-      dispatch({ type: FB_LOGOUT });
+      dispatch(logoutFB());
       navigate("/");
     } catch (err) {
-      // console.log(err);
+      dispatch(isErrorFB(err.message));
     }
   };
   return { error, isPending, logout };
@@ -88,7 +85,6 @@ export const useLogout = () => {
 
 // 회원가입 Hook
 export const useSignup = () => {
-  // const { dispatch } = useAuthContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
@@ -104,16 +100,22 @@ export const useSignup = () => {
         password,
       );
       const user = userCredential.user;
-      // console.log(user);
       if (!user) {
-        // console.log("회원가입에 실패하였습니다.");
+        const errMessage = "회원가입에 실패하였습니다.";
+        dispatch(isErrorFB(errMessage));
         return;
       }
       await updateProfile(appAuth.currentUser, {
         displayName: displayName,
         // photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
-      dispatch({ type: FB_LOGIN, payload: user });
+      dispatch(
+        loginFB({
+          email: user.email,
+          displayName: user.displayName,
+          uid: user.uid,
+        }),
+      );
       setError(null);
       setIspending(false);
       navigate("/login");
@@ -128,7 +130,7 @@ export const useSignup = () => {
       } else if (err.code == "auth/weak-password") {
         errMessage = "The password is too weak.";
       }
-      dispatch({ type: FB_IS_ERROR, payload: errMessage });
+      dispatch(isErrorFB(errMessage));
     }
   };
   return { error, ispending, signup };
@@ -136,7 +138,6 @@ export const useSignup = () => {
 
 // 이메일 변경 Hook
 export const useUpdateEmail = () => {
-  // const { dispatch } = useAuthContext();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -145,11 +146,16 @@ export const useUpdateEmail = () => {
     setIsPending(true);
     try {
       await updateEmail(appAuth.currentUser, email);
-      dispatch({ type: FB_UPDATE_EMAIL, payload: appAuth.currentUser });
+      console.log(appAuth.currentUser);
+      dispatch(
+        updateEmailFB({
+          email: appAuth.currentUser.email,
+        }),
+      );
       setIsPending(false);
     } catch (err) {
-      // console.log(err.message);
       setError(err.message);
+      dispatch(isErrorFB(err.message));
       setIsPending(false);
     }
   };
@@ -158,7 +164,6 @@ export const useUpdateEmail = () => {
 
 // 닉네임 변경 Hook
 export const useUpdateNickName = () => {
-  // const { dispatch } = useAuthContext();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -170,12 +175,25 @@ export const useUpdateNickName = () => {
         displayName: displayName,
         // photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
-      dispatch({ type: FB_UPDATE_NAME, payload: appAuth.currentUser });
+      dispatch(
+        updateNameFB({
+          displayName: appAuth.currentUser.displayName,
+        }),
+      );
       setIsPending(false);
     } catch (err) {
-      // console.log(err.message);
-      setIsPending(false);
       setError(err.message);
+      dispatch(isErrorFB(err.message));
+      setIsPending(false);
+      let errMessage = "";
+      if (err.code == "auth/email-already-in-use") {
+        errMessage = "The email address is already in use";
+      } else if (err.code == "auth/invalid-email") {
+        errMessage = "The email address is not valid.";
+      } else {
+        errMessage = "이메일을 확인해 주세요.";
+      }
+      dispatch(isErrorFB(errMessage));
     }
   };
   return { error, isPending, updateNickName };
@@ -183,6 +201,7 @@ export const useUpdateNickName = () => {
 
 // 비밀번호 변경 Hook
 export const useUpdatePassword = () => {
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const updatepw = async newPass => {
@@ -190,11 +209,17 @@ export const useUpdatePassword = () => {
     setIsPending(true);
     try {
       await updatePassword(appAuth.currentUser, newPass);
-      // console.log("비밀번호업데이트 완료");
     } catch (err) {
-      // console.log(err.message);
       setError(err.message);
+      dispatch(isErrorFB(err.message));
       setIsPending(false);
+      let errMessage = "";
+      if (err.code === "auth/weak-password") {
+        errMessage = "The password is too weak.";
+      } else {
+        errMessage = "비밀번호 다시 입력해 주세요.";
+      }
+      dispatch(isErrorFB(errMessage));
     }
   };
   return { error, isPending, updatepw };
@@ -202,7 +227,6 @@ export const useUpdatePassword = () => {
 
 // 회원탈퇴 Hook
 export const useUserDelete = () => {
-  // const { dispatch } = useAuthContext();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -212,13 +236,12 @@ export const useUserDelete = () => {
     setIsPending(true);
     try {
       await deleteUser(appAuth.currentUser);
-      dispatch({ type: FB_DELETE_USER });
+      dispatch(deleteUserFB());
       setIsPending(false);
-      // console.log("서비스 탈퇴하였습니다.");
       navigate("/");
     } catch (err) {
-      // console.log(err.message);
       setError(err.message);
+      dispatch(isErrorFB(err.message));
       setIsPending(false);
     }
   };

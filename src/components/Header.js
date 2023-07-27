@@ -5,19 +5,11 @@ import { useLogout } from "../hooks/useFirebase";
 
 const Header = () => {
   // AuthContext 로그아웃 실행으로 상태 변경
-  // const { user } = useAuthContext();
-  const { user } = useSelector(state => state);
+  const { displayName, email, uid } = useSelector(state => state.fbAuth);
   const { logout } = useLogout();
-  // const navigate = useNavigate();
   // fb 로그아웃
   const handleLogout = () => {
     logout();
-    // dispatch({ type: "logout"});
-    // firebase.auth().signOut();
-    // setUserName("");
-    // setUserEmail("");
-    // setUserUid("");
-    // navigate("/");
   };
 
   return (
@@ -39,7 +31,7 @@ const Header = () => {
           </li>
           <li>
             <Link
-              to={user ? "/todo" : "/login"}
+              to={uid ? "/todo" : "/login"}
               className="text-white hover:text-orange-600"
             >
               Todo
@@ -62,11 +54,11 @@ const Header = () => {
           </li>
         </ul>
         <div className="flex justify-center gap-5">
-          {user ? (
+          {uid ? (
             <div className="text-white">
-              <span className="px-2">{user.displayName}</span>
-              <span>{user.email}</span>
-              <span className="px-2">{user.uid}</span>
+              <span className="px-2">{displayName}</span>
+              <span>{email}</span>
+              <span className="px-2">{uid}</span>
               <button onClick={handleLogout}>Logout</button>
               <Link to="/mypage" className="text-white px-2">
                 마이페이지

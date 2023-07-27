@@ -8,9 +8,9 @@ import { useCollection } from "../hooks/useCollection";
 
 const Todo = () => {
   // 사용자별 등록을 위해 user를 참조
-  const { user } = useSelector(state => state);
+  const { uid } = useSelector(state => state.fbAuth);
   // 컬렉션 데이터 출력
-  const { documents, error } = useCollection("todo", ["uid", "==", user.uid]);
+  const { documents, error } = useCollection("todo", ["uid", "==", uid]);
   // 백엔드반 DB 테이블 구성에 활용한다. (테이블식)
   // FB, MongoDB에서는 Collection 구성에 활용한다. (객체방식)
   // 로딩 처리
@@ -46,7 +46,7 @@ const Todo = () => {
         {documents && <List todoData={documents} />}
         {/* <List todoData={todoData} setTodoData={setTodoData} /> */}
         {/* 할 일 추가 */}
-        <Form todoData={todoData} setTodoData={setTodoData} uid={user.uid} />
+        <Form todoData={todoData} setTodoData={setTodoData} uid={uid} />
       </div>
     </div>
   );

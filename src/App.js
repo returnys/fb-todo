@@ -6,7 +6,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
 import { appAuth } from "./firebase/config";
-import { FB_IS_AUTHREADY, FB_IS_ERROR } from "./modules/fbreducer";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -17,14 +16,11 @@ import SignUp from "./pages/SignUp";
 import Todo from "./pages/Todo";
 import TodoChart from "./pages/TodoChart";
 import Upload from "./pages/Upload";
+import { isAuthReadyFB, isErrorFB } from "./reducers/fbAuthSlice";
 
 function App() {
-  // const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
-  // store에 저장된 state를 읽어온다.
-  // const isAuthReady = useSelector(state => state.isAuthReady);
-  // const user = useSelector(state => state.user);
-  // const errMessage = useSelector(state => state.errMessage);
-  const { isAuthReady, user, errMessage } = useSelector(state => state);
+  // slice 활용
+  const { isAuthReady, errMessage, uid } = useSelector(state => state.fbAuth);
   // 2. store에 저장된 state를 갱신(액션 만들어서 전달)
   const dispatch = useDispatch();
 
@@ -34,7 +30,13 @@ function App() {
     onAuthStateChanged(appAuth, user => {
       // AuthContext에 user 정보를 입력한다.
       // console.log("onAuthStateChanged : ", user);
-      dispatch({ type: FB_IS_AUTHREADY, payload: user });
+      dispatch(
+        isAuthReadyFB({
+          email: user?.email,
+          displayName: user?.displayName,
+          uid: user?.uid,
+        }),
+      );
     });
   }, []);
 
@@ -43,9 +45,13 @@ function App() {
     Modal.error({
       title: "Firebase Warning Message!",
       content: errMessage,
-      onOk: dispatch({ type: FB_IS_ERROR, payload: "" }),
+      onOk: handleOK,
       okButtonProps: { style: { background: "red" } },
     });
+  };
+
+  const handleOK = () => {
+    dispatch(isErrorFB(errMessage));
   };
 
   useEffect(() => {
@@ -67,16 +73,16 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route
                 path="/login"
-                element={user ? <Navigate to="/home" /> : <Login />}
+                element={uid ? <Navigate to="/home" /> : <Login />}
               />
               <Route path="/signup" element={<SignUp />} />
               <Route
                 path="/todo"
-                element={user ? <Todo /> : <Navigate to="/login" />}
+                element={uid ? <Todo /> : <Navigate to="/login" />}
               />
               <Route
                 path="/mypage"
-                element={user ? <MyPage /> : <Navigate to="/login" />}
+                element={uid ? <MyPage /> : <Navigate to="/login" />}
               />
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/upload" element={<Upload />} />

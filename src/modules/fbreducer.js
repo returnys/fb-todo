@@ -7,14 +7,6 @@ export const FB_UPDATE_EMAIL = "fb/updateEmail";
 export const FB_DELETE_USER = "fb/deleteUser";
 export const FB_IS_ERROR = "fb/isError";
 
-// FB state 초기값
-// 1. Redux Store에서 관리할 초기 객체
-export const initialState = {
-  user: null, // 사용자 정보
-  isAuthReady: false, // 로그인 상태 체크
-  errMessage: "", // 에러 메시지
-};
-
 // FB 리듀서 정의
 // 2. Reducer 함수 작성
 // dispatch에 의해 전달된 액션을 이용하여 state를 갱신
