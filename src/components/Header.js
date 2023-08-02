@@ -1,15 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useLogout } from "../hooks/useFirebase";
+import { asyncLogoutFetch } from "../reducers/actions";
+// import { useLogout } from "../hooks/useFirebase";
 
 const Header = () => {
   // AuthContext 로그아웃 실행으로 상태 변경
   const { displayName, email, uid } = useSelector(state => state.fbAuth);
-  const { logout } = useLogout();
+  // const { logout } = useLogout();
   // fb 로그아웃
+  const dispatch = useDispatch();
   const handleLogout = () => {
-    logout();
+    // logout();
+    dispatch(asyncLogoutFetch());
   };
 
   return (

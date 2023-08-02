@@ -1,11 +1,14 @@
 import { Button, Checkbox, Form, Input, Modal } from "antd";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLogin } from "../hooks/useFirebase";
+import { asyncLoginFetch } from "../reducers/actions";
+
+// import { useLogin } from "../hooks/useFirebase";
 // import firebase from "../firebase";
 
 const Login = () => {
-  const { login } = useLogin();
+  // const { login } = useLogin();
 
   // 페이지 강제이동
   const navigate = useNavigate();
@@ -23,11 +26,14 @@ const Login = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
+  const dispatch = useDispatch();
   const onFinish = values => {
     // console.log("Success:", values);
     // Firebase 로그인 시도
-    login(values.email, values.password);
+    // login(values.email, values.password);
+    // dispatch를 통해서 액션을 만들거나 담아야 한다.
+    // payload 는 1개밖에 못보내기 때문에 객체로 만들어서 전달
+    dispatch(asyncLoginFetch({email:values.email, password:values.password}))
     // try {
     //   await firebase
     //     .auth()
